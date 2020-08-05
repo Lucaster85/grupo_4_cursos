@@ -10,7 +10,7 @@
 ## Participantes
 
 ##### Castro Lucas
-Tengo 34 años, papá de Ramón de 3 años, hincha de River Plate, y estudiante de "Programación Web Full Stack" en Digital House. ¡Futuro programador!
+Tengo 35 años, papá de Ramón de 3 años, hincha de River Plate, y "Programador Web Full Stack" recibido en Digital House.
 
 ##### Rodríguez Martin
 Tengo 25 años, estudiante de "Programación Web Full Stack" en Digital House, fanático del fútbol.
