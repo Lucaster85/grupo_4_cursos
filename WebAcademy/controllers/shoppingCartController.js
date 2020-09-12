@@ -2,6 +2,12 @@ let db = require('../database/models');
 const mailing = require('./helpers/mailerHelper');
 const helper = require('./helpers/shoppingCartHelper');
 
+const mp = require('mercadopago');
+
+mp.configure({
+    access_token: process.env.MP_ACCESS_TOKEN
+  });
+
 module.exports = {
     list: (req, res, next) => {
         db.Category.findAll({
@@ -56,21 +62,41 @@ module.exports = {
             .catch(err => res.json({msg: 'ERROR', err}));
     },
     purchase: (req, res, next) => {
-        db.User.findByPk(req.session.loggedIn.id)
-        .then(user => {
-            db.ShoppingCart.findOne({where: {user_id: user.id, status: 1}})
-        .then(cart => {
-            db.ShoppingCart.update({status: 0}, {where: {id: cart.id}})
-            return cart;
-        })
-        .then(cart => {
-            db.CartCourse.destroy({where: {shopping_cart_id: cart.id}})
-            .then(() => {
-            mailing.sendPurchaseEmail(user.email);
-            res.redirect('/');
-            });
-        })
-        .catch(err => res.json({msg: 'ERROR', err}));
-        });
+
+        let preference = {
+            items: [
+              {
+                title: 'Mi producto',
+                unit_price: 100,
+                quantity: 1,
+              }
+            ]
+          };
+          
+          mp.preferences.create(preference)
+          .then(function(response){
+          // Este valor reemplazará el string "<%= global.id %>" en tu HTML
+           // global.id = response.body.id;
+           res.redirect(response.body.init_point)
+            console.log(response);
+          }).catch(function(error){
+            console.log(error);
+          });
+        // db.User.findByPk(req.session.loggedIn.id)
+        // .then(user => {
+        //     db.ShoppingCart.findOne({where: {user_id: user.id, status: 1}})
+        // .then(cart => {
+        //     db.ShoppingCart.update({status: 0}, {where: {id: cart.id}})
+        //     return cart;
+        // })
+        // .then(cart => {
+        //     db.CartCourse.destroy({where: {shopping_cart_id: cart.id}})
+        //     .then(() => {
+        //     mailing.sendPurchaseEmail(user.email);
+        //     res.redirect('/');
+        //     });
+        // })
+        // .catch(err => res.json({msg: 'ERROR', err}));
+        // });
     },
 };
