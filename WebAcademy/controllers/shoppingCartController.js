@@ -2,6 +2,11 @@ let db = require('../database/models');
 const mailing = require('./helpers/mailerHelper');
 const helper = require('./helpers/shoppingCartHelper');
 
+//SALDO DE MI CUENTA
+//https://api.mercadopago.com/users/TU_ID_DE_USUARIO/mercadopago_account/balance?access_token=TEST-4694969711780090-091116-834dab29092a1c01ff686549c57167bb-34537213
+
+//curl -X POST -H "Content-Type: application/json" "https://api.mercadopago.com/users/test_user?access_token=TEST-4694969711780090-091116-834dab29092a1c01ff686549c57167bb-34537213" -d '{"site_id":"MLA"}'
+//{"id":644149587,"nickname":"TETE5452658","password":"qatest7342","site_status":"active","email":"test_user_54232673@testuser.com"}
 const mp = require('mercadopago');
 
 mp.configure({
